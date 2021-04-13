@@ -1,4 +1,5 @@
 jenkins:
+  numExecutors: 1
   securityRealm:
     local:
       allowsSignup: false
@@ -18,3 +19,37 @@ jenkins:
         - "Overall/Read:authenticated"
         - "Run/Replay:dev"
         - "Run/Update:dev"
+# jobs:
+#   - file: /usr/local/seedjob.groovy
+jobs:
+  - script: >
+      folder('testjobs')
+  - script: >
+      pipelineJob('testjobs/default-agent') {
+        definition {
+          cps {
+            script("""\
+              pipeline {
+                agent any
+                stages {
+                  stage ('test') {
+                    steps {
+                      echo "hello"
+                    }
+                  }
+                }
+              }""".stripIndent())
+          }
+        }
+      }
+  - script: >
+      pipelineJob('job1') {
+        definition {
+          cpsScm {
+            scm {
+              git('https://github.com/eastNine/jenkins-casc.git')
+            }
+            scriptPath('job1.groovy')
+          }
+        }
+      }
