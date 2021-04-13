@@ -56,3 +56,31 @@ jobs:
           }
         }
       }
+  - script: >
+      pipelineJob('job1-not-sandbox') {
+        environmentVariables {
+          envs(FOO: 'foobar', TEST: '123456')
+        }
+        definition {
+          cps {
+            File file = new File('/usr/local/job1.groovy')
+            String filebody = file.getText('UTF-8')
+            script(filebody)
+          }
+        }
+      }
+  - file: /usr/local/job2.groovy
+  - script: >
+      pipelineJob('job2-onconfig-casc') {
+        definition {
+          environmentVariables {
+            envs(WORLD: 'WORLD')
+          }
+          cps {
+            File file = new File('/usr/local/template1.groovy')
+            String filebody = file.getText('UTF-8')
+            script(filebody)
+            sandbox()
+          }
+        }
+      }

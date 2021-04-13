@@ -14,6 +14,10 @@ ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 
 # copy the seedjob file into the image
 COPY seedjob.groovy /usr/local/seedjob.groovy
+# copy job file
+COPY job1.groovy /usr/local/job1.groovy
+COPY job2.groovy /usr/local/job2.groovy
+COPY template1.groovy /usr/local/template1.groovy
 # copy the config-as-code yaml file into the image
 COPY jenkins-casc.yaml /usr/local/jenkins-casc.yaml
 # tell the jenkins config-as-code plugin where to find the yaml file

@@ -4,5 +4,9 @@ job-dsl
 blueocean
 workflow-job
 workflow-cps
+workflow-aggregator
+pipeline-stage-view
 
 matrix-auth
+
+envinject
