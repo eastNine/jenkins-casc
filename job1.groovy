@@ -4,6 +4,8 @@ pipeline {
         stage ('test') {
             steps {
                 echo "hello"
+                echo env.TEST
+                echo env.FOO
             }
         }
     }

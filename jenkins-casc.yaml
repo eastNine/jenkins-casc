@@ -44,10 +44,13 @@ jobs:
       }
   - script: >
       pipelineJob('job1') {
+        environmentVariables {
+          envs(FOO: 'bar', TEST: '123')
+        }
         definition {
           cpsScm {
             scm {
-              git('https://github.com/eastNine/jenkins-casc.git')
+              github('eastNine/jenkins-casc')
             }
             scriptPath('job1.groovy')
           }
