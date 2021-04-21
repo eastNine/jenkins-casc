@@ -18,6 +18,7 @@ COPY seedjob.groovy /usr/local/seedjob.groovy
 COPY job1.groovy /usr/local/job1.groovy
 COPY job2.groovy /usr/local/job2.groovy
 COPY template1.groovy /usr/local/template1.groovy
+COPY k8sjob.groovy /usr/local/k8sjob.groovy
 # copy the config-as-code yaml file into the image
 COPY jenkins-casc.yaml /usr/local/jenkins-casc.yaml
 # tell the jenkins config-as-code plugin where to find the yaml file

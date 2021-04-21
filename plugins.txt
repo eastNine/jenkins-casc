@@ -1,5 +1,8 @@
 configuration-as-code
-
+git
+kubernetes
+kubernetes-credentials
+credentials-binding
 job-dsl
 blueocean
 workflow-job

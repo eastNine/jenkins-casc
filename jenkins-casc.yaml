@@ -19,9 +19,8 @@ jenkins:
         - "Overall/Read:authenticated"
         - "Run/Replay:dev"
         - "Run/Update:dev"
-# jobs:
-#   - file: /usr/local/seedjob.groovy
 jobs:
+  - file: /usr/local/seedjob.groovy
   - script: >
       folder('testjobs')
   - script: >
@@ -84,3 +83,4 @@ jobs:
           }
         }
       }
+  - file: /usr/local/k8sjob.groovy
