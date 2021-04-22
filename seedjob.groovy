@@ -28,8 +28,21 @@ pipeline {
         }
     }
 }
-​
 """)
+            }
+        }
+    }
+}
+
+create_k8spipeline()
+def create_k8spipeline() {
+    pipelineJob('k8sjob') {
+        definition {
+            cps {
+                sandbox(true)
+                File file = new File('/usr/local/k8sjob.groovy')
+                String filebody = file.getText('UTF-8')
+                script(filebody)
             }
         }
     }

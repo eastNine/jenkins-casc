@@ -1,4 +1,39 @@
+unclassified:
+  location:
+    url: http://jenkins-casc.default.svc.cluster.local/
+
 jenkins:
+  clouds:
+    - kubernetes:
+        name: "kubernetes"
+        #serverUrl: "https://infrajenkins-dns-52bf430b.hcp.koreacentral.azmk8s.io:443"
+        #serverCertificate: "serverCertificate"
+        #skipTlsVerify: true
+        #credentialsId: "advanced-k8s-credentials"
+        namespace: "default"
+        jenkinsUrl: "http://jenkins-casc.default.svc.cluster.local/"
+        #jenkinsTunnel: "jenkinsTunnel"
+        containerCapStr: 100
+        maxRequestsPerHostStr: 64
+        retentionTimeout: 5
+        connectTimeout: 10
+        readTimeout: 20
+        templates:
+          - name: "k8s-agent"
+            namespace: "default"
+            label: "linux-x86_64"
+            nodeUsageMode: EXCLUSIVE
+            containers:
+              - name: "azure-cli"
+                image: "mcr.microsoft.com/azure-cli"
+                alwaysPullImage: true
+                ttyEnabled: true
+                command: "cat"
+              - name: "maven"
+                image: "maven:3.3.9-jdk-8-alpine"
+                alwaysPullImage: true
+                ttyEnabled: true
+                command: "cat"
   numExecutors: 1
   securityRealm:
     local:
@@ -83,4 +118,3 @@ jobs:
           }
         }
       }
-  - file: /usr/local/k8sjob.groovy
