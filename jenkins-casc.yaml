@@ -21,11 +21,25 @@ jenkins:
         templates:
           - name: "k8s-agent"
             namespace: "default"
-            label: "linux-x86_64"
+            label: "k8s-agent"
             nodeUsageMode: EXCLUSIVE
+            volumes:
+              - name: maven-home
+                persistentVolumeClaim:
+                  claimName: jenkins-maven-disk
             containers:
               - name: "azure-cli"
                 image: "mcr.microsoft.com/azure-cli"
+                alwaysPullImage: true
+                ttyEnabled: true
+                command: "cat"
+              - name: "packer"
+                image: "hashicorp/packer"
+                alwaysPullImage: true
+                ttyEnabled: true
+                command: "cat"
+              - name: "jq"
+                image: "stedolan/jq"
                 alwaysPullImage: true
                 ttyEnabled: true
                 command: "cat"
@@ -33,6 +47,9 @@ jenkins:
                 image: "maven:3.3.9-jdk-8-alpine"
                 alwaysPullImage: true
                 ttyEnabled: true
+                volumeMounts:
+                  - mountPath: "/root/.m2"
+                    name: maven-home
                 command: "cat"
   numExecutors: 1
   securityRealm:

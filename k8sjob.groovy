@@ -1,41 +1,52 @@
 pipeline {
-    pod {
-        containers {
-            container {
-                name 'maven'
-                image 'maven:3.3.9-jdk-8-alpine'
-            }
-            container {
-                name 'golang'
-                image 'golang:1.8.0'
-            }
-            container {
-                name 'azure-cli'
-                image 'mcr.microsoft.com/azure-cli'
-            }
+    options { 
+        disableConcurrentBuilds()
+        ansiColor('xterm')
+    }
+    agent {
+        kubernetes {
+        yaml """\
+            apiVersion: v1
+            kind: Pod
+            metadata:
+            labels:
+                some-label: some-label-value
+            spec:
+            volumes:
+                - name: maven-home
+                persistentVolumeClaim:
+                    claimName: jenkins-maven-disk
+            containers:
+            - name: maven
+                image: maven:alpine
+                volumeMounts:
+                - mountPath: "/root/.m2"
+                    name: maven-home
+                command:
+                - cat
+                tty: true
+            - name: busybox
+                image: busybox
+                command:
+                - cat
+                tty: true
+            """.stripIndent()
         }
     }
-    agent none
     stages {
         stage ('build') {
-            agent {
-                container {
-                    name 'maven'
-                }
-            }
             steps {
-                git 'https://github.com/jenkinsci/kubernetes-plugin.git'
-                sh 'mvn -B clean install'
+                container('maven') {
+                    git 'https://github.com/jenkinsci/kubernetes-plugin.git'
+                    sh 'mvn -B clean'
+                }
             }
         }
         stage ('run') {
-            agent {
-                container {
-                    name 'azure-cli'
-                }
-            }
             steps {
-                sh 'az login --identity'
+                container('azure-cli') {
+                    sh 'az login --identity'
+                }
             }
         }
     }

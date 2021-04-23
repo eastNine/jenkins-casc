@@ -34,13 +34,17 @@ pipeline {
     }
 }
 
-create_k8spipeline()
-def create_k8spipeline() {
-    pipelineJob('k8sjob') {
+pipelines = ["k8sjob", "spring-petclinic"]
+pipelines.each { pipeline ->
+    println "Creating pipeline ${pipeline}"
+    create_k8spipeline(pipeline)
+}
+def create_k8spipeline(String pipelineName) {
+    pipelineJob(pipelineName) {
         definition {
             cps {
                 sandbox(true)
-                File file = new File('/usr/local/k8sjob.groovy')
+                File file = new File('/usr/local/' + pipelineName + '.groovy')
                 String filebody = file.getText('UTF-8')
                 script(filebody)
             }

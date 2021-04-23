@@ -12,13 +12,14 @@ RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/plugins.txt
 # disable the setup wizard as we will set up jenkins as code :)
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 
-# copy the seedjob file into the image
-COPY seedjob.groovy /usr/local/seedjob.groovy
-# copy job file
-COPY job1.groovy /usr/local/job1.groovy
-COPY job2.groovy /usr/local/job2.groovy
-COPY template1.groovy /usr/local/template1.groovy
-COPY k8sjob.groovy /usr/local/k8sjob.groovy
+# copy the seedjob and job files into the image
+# COPY seedjob.groovy /usr/local/seedjob.groovy
+# COPY job1.groovy /usr/local/job1.groovy
+# COPY job2.groovy /usr/local/job2.groovy
+# COPY template1.groovy /usr/local/template1.groovy
+# COPY k8sjob.groovy /usr/local/k8sjob.groovy
+# COPY spring-petclinic.groovy /usr/local/spring-petclinic.groovy
+COPY *.groovy /usr/local/
 # copy the config-as-code yaml file into the image
 COPY jenkins-casc.yaml /usr/local/jenkins-casc.yaml
 # tell the jenkins config-as-code plugin where to find the yaml file

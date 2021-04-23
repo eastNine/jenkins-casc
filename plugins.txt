@@ -13,3 +13,4 @@ pipeline-stage-view
 matrix-auth
 
 envinject
+ansicolor
