@@ -4,8 +4,43 @@ pipeline {
         ansiColor('xterm')
     }
     agent {
-        node {
-            label 'k8s-agent'
+        kubernetes {
+            yaml """\
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  some-label: some-label-value
+spec:
+  volumes:
+  - name: maven-home
+    persistentVolumeClaim:
+      claimName: my-azurefile
+  containers:
+  - name: maven
+    image: maven:3.3.9-jdk-8-alpine
+    volumeMounts:
+    - mountPath: "/root/.m2"
+      name: maven-home
+    command:
+    - cat
+    tty: true
+  - name: azure-cli
+    image: mcr.microsoft.com/azure-cli
+    tty: true
+    command:
+    - cat
+  - name: packer
+    image: hashicorp/packer
+    tty: true
+    command:
+    - cat
+  - name: jq
+    image: stedolan/jq
+    tty: true
+    command:
+    - cat
+""".stripIndent()
         }
     }
     parameters {

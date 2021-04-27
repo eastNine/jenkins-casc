@@ -23,10 +23,10 @@ jenkins:
             namespace: "default"
             label: "k8s-agent"
             nodeUsageMode: EXCLUSIVE
-            volumes:
-              - name: maven-home
-                persistentVolumeClaim:
-                  claimName: jenkins-maven-disk
+            # volumes:
+            #   - name: maven-home
+            #     persistentVolumeClaim:
+            #       claimName: my-azurefile
             containers:
               - name: "azure-cli"
                 image: "mcr.microsoft.com/azure-cli"
@@ -47,9 +47,9 @@ jenkins:
                 image: "maven:3.3.9-jdk-8-alpine"
                 alwaysPullImage: true
                 ttyEnabled: true
-                volumeMounts:
-                  - mountPath: "/root/.m2"
-                    name: maven-home
+                # volumeMounts:
+                #   - name: maven-home
+                #     mountPath: "/root/.m2"
                 command: "cat"
   numExecutors: 1
   securityRealm:
