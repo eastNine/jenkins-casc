@@ -5,32 +5,32 @@ pipeline {
     }
     agent {
         kubernetes {
-        yaml """\
-            apiVersion: v1
-            kind: Pod
-            metadata:
-            labels:
-                some-label: some-label-value
-            spec:
-            volumes:
-                - name: maven-home
-                persistentVolumeClaim:
-                    claimName: jenkins-maven-disk
-            containers:
-            - name: maven
-                image: maven:alpine
-                volumeMounts:
-                - mountPath: "/root/.m2"
-                    name: maven-home
-                command:
-                - cat
-                tty: true
-            - name: busybox
-                image: busybox
-                command:
-                - cat
-                tty: true
-            """.stripIndent()
+            yaml """\
+apiVersion: v1
+kind: Pod
+metadata:
+labels:
+  some-label: some-label-value
+spec:
+  volumes:
+  - name: maven-home
+    persistentVolumeClaim:
+      claimName: jenkins-maven-disk
+  containers:
+  - name: maven
+    image: maven:alpine
+    volumeMounts:
+    - mountPath: "/root/.m2"
+      name: maven-home
+    command:
+    - cat
+    tty: true
+  - name: busybox
+    image: busybox
+    command:
+    - cat
+    tty: true
+""".stripIndent()
         }
     }
     stages {
@@ -44,8 +44,8 @@ pipeline {
         }
         stage ('run') {
             steps {
-                container('azure-cli') {
-                    sh 'az login --identity'
+                container('busybox') {
+                    sh 'echo HELLO K8S'
                 }
             }
         }
